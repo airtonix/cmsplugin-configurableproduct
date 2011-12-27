@@ -12,7 +12,7 @@ from cms.models.pluginmodel import CMSPlugin
 from .lib.choices import DynamicChoice
 
 
-TEMPLATE_BASE_PATH = "cmsplugin_configurable_product"
+TEMPLATE_BASE_PATH = "cmsplugin_configurableproduct"
 PRODUCT_TYPE_TEMPLATE_PATH = os.path.join(TEMPLATE_BASE_PATH, "product-types")
 PRODUCT_LIST_TEMPLATE_PATH = os.path.join(TEMPLATE_BASE_PATH, "product-list")
 

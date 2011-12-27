@@ -1,7 +1,0 @@
-{% for Product in Products %}
-<div id="product-{{ Product.id }}"
-     data-product-type="{{ Product.type|slugify }}"
-     class="product span6">
-    {% include 'cmsplugin_configurable_product/snippets/product-display-only.html' %}
-  </div>
-{% endfor %}
