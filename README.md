@@ -25,16 +25,17 @@ This simple extension provides some plugins to display things about your
 
 3. or, install it from github
 
-    pip install git+https://github.com/airtonix/djangocms-plugin-menu
+    pip install git+https://github.com/airtonix/djangocms-plugin-configurableproduct
 
 
 ## Override Template
 
 Choosing a template in the administration interface means that you
 populate the following two relative paths (to any of your app template dirs)
+with templates you desire tobe made available.
 
-* cms/plugins/configurable_product/product-types
-* cms/plugins/configurable_product/product-list
+* cmsplugin_configurable_product/product-types
+* cmsplugin_configurable_product/product-list
 
 
 Any .html file that doesn't contain the word 'base' will be presented in
