@@ -1,17 +1,18 @@
 import os
-
 from setuptools import (
   setup,
   find_packages,
 )
+import cmsplugin_configurableproduct
+
 
 def read(fname):
     return open(os.path.join(os.path.dirname(__file__), fname)).read()
 
 setup(
     name='djangocms-plugin-configurableproduct',
-    version='0.0.1',
-     classifiers = [
+    version=cmsplugin_configurableproduct.__version__,
+    classifiers = [
         'Development Status :: 4 - Beta',
         'Framework :: Django',
         'Intended Audience :: Developers',
@@ -22,16 +23,16 @@ setup(
     ],
     packages=find_packages(),
     install_requires=[
-        'sorl-thumbnail',
         'django-shop',
+        'django-cms'
     ],
-    author='Pavel Zhukov',
+    author='Zenobius Jiricek',
     author_email='airtonix@gmail.com',
-    description='DjangoCMS plugin for Configurable product for django-shop',
+    description='DjangoCMS plugin for django-shop-configurableproduct',
     long_description = read('README.md'),
     license='BSD',
-    keywords='djangocms, django-shop, product',
-    url='git://github.com/airtonix/djangocms-plugin-configurableproduct.git',
+    keywords='django-cms, django-shop, product',
+    url='http://github.com/airtonix/djangocms-plugin-configurableproduct',
     include_package_data=True,
     zip_safe = False,
 )

@@ -60,15 +60,15 @@ class DynamicTemplateChoices(DynamicChoice):
 
         return output
 
+PRODUCT_TYPE_TEMPLATE_PATH = os.path.join("cmsplugin_configurable_product", "product-types")
+PRODUCT_LIST_TEMPLATE_PATH = os.path.join("cmsplugin_configurable_product", "product-list")
 
 class CProductTypesPlugin(CMSPlugin):
     """ Stores options for cmsplugin that shows lists of ProductTypes
     """
 
-    TEMPLATE_PATH = os.path.join("shop", "plugins",
-        "configurable_product", "product-types")
     TEMPLATE_CHOICES = DynamicTemplateChoices(
-            path=TEMPLATE_PATH,
+            path=PRODUCT_TYPE_TEMPLATE_PATH,
             include='.html',
             exclude='base')
 
@@ -86,7 +86,7 @@ class CProductTypesPlugin(CMSPlugin):
     template = models.CharField(choices=TEMPLATE_CHOICES,
       max_length=256, blank=True, null=True,
       help_text="""Select a template to render this
-      list. Templates are stored in : {0}""".format(TEMPLATE_PATH))
+      list. Templates are stored in : {0}""".format(PRODUCT_TYPE_TEMPLATE_PATH))
 
     def __unicode__(self):
         return U"Types: {0}".format(self.categories.all())
@@ -99,10 +99,8 @@ class CProductsPlugin(CMSPlugin):
         ("show", "Filter"),
         ("hide", "Exclude")
       )
-    TEMPLATE_PATH = os.path.join("shop", "plugins",
-      "configurable_product", "product-list")
     TEMPLATE_CHOICES = DynamicTemplateChoices(
-            path=TEMPLATE_PATH,
+            path=PRODUCT_LIST_TEMPLATE_PATH,
             include='.html',
             exclude='base')
 
@@ -125,14 +123,7 @@ class CProductsPlugin(CMSPlugin):
     template = models.CharField(choices=TEMPLATE_CHOICES,
       max_length=256,
       blank=True, null=True, help_text="""Select a template to render this
-      list. Templates are stored in : {0}""".format(TEMPLATE_PATH))
-
-    def get_template_choices(self):
-        choices = list()
-        for template_dir in app_template_dirs:
-          choices += walkdir(os.path.join(template_dir,self.TEMPLATE_PATH),
-            ".html", "base")
-        return choices
+      list. Templates are stored in : {0}""".format(PRODUCT_LIST_TEMPLATE_PATH))
 
     def __unicode__(self):
         return U"Types: {0}".format(",".join([ ctype.name for ctype in self.categories.all()]))

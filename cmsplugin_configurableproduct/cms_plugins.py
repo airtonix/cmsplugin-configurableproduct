@@ -10,12 +10,14 @@ from configurableproduct.models.producttypes import ProductType
 from .models import (
   CProductTypesPlugin,
   CProductsPlugin,
+  PRODUCT_TYPE_TEMPLATE_PATH,
+  PRODUCT_LIST_TEMPLATE_PATH,
 )
 
 class ProductCategories(CMSPluginBase):
     model = CProductTypesPlugin
-    name = _("Product Types")
-    render_template = "shop/plugins/configurable_product/product-types/base.html"
+    name = _("List of Product Types")
+    render_template = os.path.join(PRODUCT_TYPE_TEMPLATE_PATH, "base.html")
 
     def render(self, context, instance, placeholder):
         objects = Product.objects.filter(active=True)
@@ -23,16 +25,16 @@ class ProductCategories(CMSPluginBase):
         types = ProductType.objects.filter(pk__in = used_types)
         context.update({'Types': types, })
         return context
+
 plugin_pool.register_plugin(ProductCategories)
 
 
 class CategoryProducts(CMSPluginBase):
     model = CProductsPlugin
-    name = _("Products of Type")
-    render_template = "shop/plugins/configurable_product/product-list/base.html"
+    name = _("List of Products")
+    render_template = os.path.join(PRODUCT_LIST_TEMPLATE_PATH, "base.html")
 
     def render(self, context, instance, placeholder):
-
         products = Product.objects.filter(type__pk__in = instance.categories.all())
         context.update({
           "Products": products
