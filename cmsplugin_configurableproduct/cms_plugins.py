@@ -7,7 +7,7 @@ from cms.models.pluginmodel import CMSPlugin
 from configurableproduct.models import CProduct as Product
 from configurableproduct.models.producttypes import ProductType
 
-from models import (
+from .models import (
   CProductTypesPlugin,
   CProductsPlugin,
 )

@@ -1,7 +1,7 @@
 ## djangoCMS/Shop Configurable Products Extension
 
 This simple extension provides some plugins to display things about your
-django-shop configurable products.
+[django-shop configurable products](https://bitbucket.org/zeus/django-shop-configurableproduct).
 
 
 ## Requirements
