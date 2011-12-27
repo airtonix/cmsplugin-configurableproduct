@@ -1,0 +1,6 @@
+{% for Type in Types %}
+<div id="product-{{ Type.id }}"
+     data-product-type="{{ Type.name|slugify }}">
+  {{ Product }}
+</div>
+{% endfor %}

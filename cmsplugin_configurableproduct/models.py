@@ -12,6 +12,11 @@ from cms.models.pluginmodel import CMSPlugin
 from .lib.choices import DynamicChoice
 
 
+TEMPLATE_BASE_PATH = "cmsplugin_configurable_product"
+PRODUCT_TYPE_TEMPLATE_PATH = os.path.join(TEMPLATE_BASE_PATH, "product-types")
+PRODUCT_LIST_TEMPLATE_PATH = os.path.join(TEMPLATE_BASE_PATH, "product-list")
+
+
 class DynamicTemplateChoices(DynamicChoice):
     path = None
     exclude = None
@@ -60,8 +65,7 @@ class DynamicTemplateChoices(DynamicChoice):
 
         return output
 
-PRODUCT_TYPE_TEMPLATE_PATH = os.path.join("cmsplugin_configurable_product", "product-types")
-PRODUCT_LIST_TEMPLATE_PATH = os.path.join("cmsplugin_configurable_product", "product-list")
+
 
 class CProductTypesPlugin(CMSPlugin):
     """ Stores options for cmsplugin that shows lists of ProductTypes
