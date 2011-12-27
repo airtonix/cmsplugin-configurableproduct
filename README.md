@@ -8,7 +8,7 @@ This simple extension provides some plugins to display things about your
 
 * django-shop
 * django-cms
-* configurable-products
+* django-shop-configurableproduct
 * And all the requirements the above three projects depend on.
 
 
@@ -21,11 +21,11 @@ This simple extension provides some plugins to display things about your
 
 2. install it from pypi
 
-    pip install djangocms-plugin-menu
+    pip install cmsplugin-configurableproduct
 
 3. or, install it from github
 
-    pip install git+https://github.com/airtonix/djangocms-plugin-configurableproduct
+    pip install git+https://github.com/airtonix/cmsplugin-configurableproduct
 
 
 ## Override Template
@@ -34,8 +34,8 @@ Choosing a template in the administration interface means that you
 populate the following two relative paths (to any of your app template dirs)
 with templates you desire tobe made available.
 
-* cmsplugin_configurable_product/product-types
-* cmsplugin_configurable_product/product-list
+* cmsplugin_configurableproduct/product-types
+* cmsplugin_configurableproduct/product-list
 
 
 Any .html file that doesn't contain the word 'base' will be presented in
@@ -55,8 +55,8 @@ is `plugin.instance` a reference to the settings model.
 
 #### base.html
 
-base.html in each plugin subdir is used to load the selected template
-chosen in the administration interface.
+base.html in the `cmsplugin_configurableproduct` directory is used to load the
+selected template chosen in the administration interface.
 
 
 #### ./product-types/*.html
@@ -110,7 +110,7 @@ templates here are provided the context :
 ## Contributions
 
 anyone is free to contribute, simply submit a merge request at
-github : http://github.com/airtonix/djangocms-plugin-configurableproduct
+github : http://github.com/airtonix/cmsplugin-configurableproduct
 
 
 ## Todo
