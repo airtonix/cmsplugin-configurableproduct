@@ -22,6 +22,7 @@ class ProductCategories(CMSPluginBase):
     name = _("List of Product Types")
     render_template = os.path.join(TEMPLATE_BASE_PATH, "base.html")
     default_template = os.path.join(PRODUCT_TYPE_TEMPLATE_PATH, "default.html")
+    admin_preview = False
 
     def render(self, context, instance, placeholder):
         objects = Product.objects.filter(active=True)
@@ -44,6 +45,7 @@ class CategoryProducts(CMSPluginBase):
     name = _("List of Products")
     render_template = os.path.join(TEMPLATE_BASE_PATH, "base.html")
     default_template = os.path.join(PRODUCT_TYPE_TEMPLATE_PATH, "default.html")
+    admin_preview = False
 
     def render(self, context, instance, placeholder):
         products = Product.objects.filter(type__pk__in = instance.categories.all())
