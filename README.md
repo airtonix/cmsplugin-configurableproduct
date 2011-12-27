@@ -15,6 +15,7 @@ This simple extension provides some plugins to display things about your
 ## Installation
 
 1. make sure you are using a python virtual environment
+
     virtualenv ~/Dev/virtualenv/projectname
     . ~/Dev/virtualenv/projectname/bin/activate
     cd ~/Dev/projects/projectname/
@@ -32,14 +33,34 @@ This simple extension provides some plugins to display things about your
 
 Choosing a template in the administration interface means that you
 populate the following two relative paths (to any of your app template dirs)
-with templates you desire tobe made available.
+with templates you desire to be made available.
 
 * cmsplugin_configurableproduct/product-types
 * cmsplugin_configurableproduct/product-list
 
-
 Any .html file that doesn't contain the word 'base' will be presented in
 the template selector combo dropdown in the admin interface.
+
+For example, if your django project was at :
+
+    ~/Dev/Django/MyProjectName/
+
+And you had a django application named `SomethingSomethingSomething` at :
+
+    ~/Dev/Django/MyProjectName/SomethingSomethingSomething/
+
+Then templates for this plugin could be found at :
+
+    ~/Dev/Django/MyProjectName/SomethingSomethingSomething/templates/cmsplugin_configurableproduct/product-types/*.html
+    ~/Dev/Django/MyProjectName/SomethingSomethingSomething/templates/cmsplugin_configurableproduct/product-list/*.html
+
+In fact, anywhere django looks for templates, you can place the following tree :
+
+    /cmsplugin_configurableproduct
+        /product-types
+            /*.html
+        /product-list
+            /*.html
 
 
 ### Customising Templates
