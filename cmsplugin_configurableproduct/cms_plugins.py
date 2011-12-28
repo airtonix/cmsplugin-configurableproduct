@@ -36,7 +36,6 @@ class ProductCategories(CMSPluginBase):
 
         return context
 
-
 plugin_pool.register_plugin(ProductCategories)
 
 
