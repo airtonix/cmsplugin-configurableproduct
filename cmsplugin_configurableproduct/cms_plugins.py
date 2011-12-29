@@ -9,6 +9,11 @@ from cms.models.pluginmodel import CMSPlugin
 from configurableproduct.models import CProduct as Product
 from configurableproduct.models.producttypes import ProductType
 
+from .lib.choices import (
+  DynamicTemplateChoices,
+  DynamicChoice,
+  )
+
 from .models import (
   CProductTypesPlugin,
   CProductsPlugin,
@@ -17,12 +22,18 @@ from .models import (
   PRODUCT_LIST_TEMPLATE_PATH,
 )
 
+from .forms import (
+  CProductTypesAdminForm,
+  CProductsAdminForm,
+)
+
 class ProductCategories(CMSPluginBase):
     model = CProductTypesPlugin
     name = _("List of Product Types")
     render_template = os.path.join(TEMPLATE_BASE_PATH, "base.html")
     default_template = os.path.join(PRODUCT_TYPE_TEMPLATE_PATH, "default.html")
     admin_preview = False
+    form = CProductTypesAdminForm
 
     def render(self, context, instance, placeholder):
         objects = Product.objects.filter(active=True)
@@ -45,6 +56,22 @@ class CategoryProducts(CMSPluginBase):
     render_template = os.path.join(TEMPLATE_BASE_PATH, "base.html")
     default_template = os.path.join(PRODUCT_TYPE_TEMPLATE_PATH, "default.html")
     admin_preview = False
+    form = CProductsAdminForm
+
+    fieldsets = (
+      ('Display Template',
+          {'fields': [ ('template', ),
+                      ]}),
+
+      ('Show Products of Type...',
+          {'fields': [ ('hide_empty_categories','categories', ),
+                      ]}),
+
+      ('Filtering', {
+        'classes': ('collapse',),
+        'fields': ['filter_action', 'filter_product_attributes']
+      }),
+    )
 
     def render(self, context, instance, placeholder):
         products = Product.objects.filter(type__pk__in = instance.categories.all())
