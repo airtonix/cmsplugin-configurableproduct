@@ -35,5 +35,4 @@ setup(
     keywords='django-cms, plugin, django-shop, product',
     url='http://github.com/airtonix/cmsplugin-configurableproduct',
     include_package_data=True,
-    zip_safe = False,
 )

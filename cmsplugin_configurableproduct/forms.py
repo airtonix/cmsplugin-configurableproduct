@@ -1,5 +1,4 @@
 from django.forms import ModelForm
-from django.contrib.auth.models import User
 from django.forms import ModelChoiceField, ChoiceField
 
 from .lib.choices import (
@@ -14,8 +13,6 @@ from .models import (
   PRODUCT_TYPE_TEMPLATE_PATH,
   PRODUCT_LIST_TEMPLATE_PATH,
 )
-
-
 
 
 class CProductTypesAdminForm(ModelForm):

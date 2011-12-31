@@ -57,6 +57,7 @@ class CategoryProducts(CMSPluginBase):
     default_template = os.path.join(PRODUCT_TYPE_TEMPLATE_PATH, "default.html")
     admin_preview = False
     form = CProductsAdminForm
+    filter_horizontal = ('categories', )
 
     fieldsets = (
       ('Display Template',
