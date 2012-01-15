@@ -32,17 +32,10 @@ class ProductTypeIcon(Tag):
     )
 
     def render_tag(self, context, product_type, tag):
-        default_image_path = os.path.join(settings.STATIC_ROOT,
-            ApplicationSettings.DEFAULT_CATEGORY_IMAGE_PATH)
-
         try:
             icon = product_type.icons.get(name = tag)
 
         except Exception, error:
-            icon_file = open(default_image_path, 'r')
-            icon = ImageFile(icon_file)
-
-        except IOError, error:
             icon = None
 
-        return icon
+        return ApplicationSettings.DEFAULT_CATEGORY_IMAGE_URL

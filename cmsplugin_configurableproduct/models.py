@@ -15,20 +15,28 @@ from .lib.choices import (
   DynamicChoice,
   )
 
-STATIC_URL = getattr(settings, "STATIC_URL", '/static/')
+STATIC_URL = getattr(settings, "STATIC_URL", '/static')
+STATIC_ROOT = getattr(settings, "STATIC_ROOT", None)
+MEDIA_URL = getattr(settings, "MEDIA_URL", '/media')
+MEDIA_ROOT = getattr(settings, "MEDIA_ROOT", None)
 
 
 class ApplicationSettings(AppConf):
     TEMPLATE_BASE_PATH = __package__
     PRODUCT_TYPE_TEMPLATE_PATH = os.path.join(TEMPLATE_BASE_PATH, "product-types")
     PRODUCT_LIST_TEMPLATE_PATH = os.path.join(TEMPLATE_BASE_PATH, "product-list")
-    DEFAULT_CATEGORY_IMAGE_PATH = '{0}defaults/product-category.png'.format(STATIC_URL)
-    CATEGORY_IMAGE_ROOT = os.sep.join((TEMPLATE_BASE_PATH, 'product-categories'))
+    DEFAULT_CATEGORY_IMAGE_URL = '{0}/defaults/img/product-category'.format(STATIC_URL)
+    DEFAULT_CATEGORY_IMAGE_ROOT = '{0}/defaults/img/product-category'.format(STATIC_ROOT)
+    CATEGORY_IMAGE_URL = '{0}/product-category'.format(MEDIA_URL)
+    CATEGORY_IMAGE_ROOT = '{0}/product-category'.format(MEDIA_ROOT)
 
 class ProductTypeIcon(models.Model):
-    upload_path = lambda instance, filename: "/".join((
-      ApplicationSettings.CATEGORY_IMAGE_ROOT, "{0}-{1}".format(
-        slugify(instance.product_type), filename)))
+#    upload_path = lambda instance, filename: "/product-category".join((
+#      ApplicationSettings.CATEGORY_IMAGE_ROOT, "{0}-{1}".format(
+#        slugify(instance.product_type), filename)))
+
+    upload_path = lambda instance, filename: "files/product-category/{0}".format(
+      "{0}-{1}".format(slugify(instance.product_type), filename) )
 
     # fields
     name = models.CharField(max_length=128, default="small")
@@ -36,6 +44,7 @@ class ProductTypeIcon(models.Model):
     product_type = models.ForeignKey('configurableproduct.ProductType',
        related_name='icons', help_text="""The product type you want this icon
        related to...""")
+
 
 class CProductTypesPlugin(CMSPlugin):
     """ Stores options for cmsplugin that shows lists of ProductTypes

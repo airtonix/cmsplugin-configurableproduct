@@ -3,9 +3,12 @@
   <div class="product span8"
        id="product-{{ Type.id }}"
        data-product-type="{{ Type.name|slugify }}">
+
        <img src="{% product_type_icon Type 'small' %}"/>
+
     <div class="header">
       <a href="#">{{ Type }}</a>
     </div>
+
   </div>
 {% endfor %}
