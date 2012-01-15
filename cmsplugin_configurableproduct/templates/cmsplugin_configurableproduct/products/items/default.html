@@ -1,0 +1,5 @@
+<div id="product-{{ Product.id }}"
+    data-product-type="{{ Product.type|slugify }}"
+    class="product span6">
+    {% include 'cmsplugin_configurableproduct/snippets/product-display-only.html' %}
+</div>

@@ -1,0 +1,5 @@
+<div class="cmsplugin cmsplugin-shop plugin-configurableproduct-productlist">
+{% for Product in Products %}
+    {% include plugin.instance.item_template|default:plugin.instance.DEFAULT_ITEM_TEMPLATE %}
+{% endfor %}
+</div>

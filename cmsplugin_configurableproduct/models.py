@@ -23,18 +23,20 @@ MEDIA_ROOT = getattr(settings, "MEDIA_ROOT", None)
 
 class ApplicationSettings(AppConf):
     TEMPLATE_BASE_PATH = __package__
-    PRODUCT_TYPE_TEMPLATE_PATH = os.path.join(TEMPLATE_BASE_PATH, "product-types")
-    PRODUCT_LIST_TEMPLATE_PATH = os.path.join(TEMPLATE_BASE_PATH, "product-list")
+
+    PRODUCT_TYPE_CONTAINER_TEMPLATES = os.path.join(TEMPLATE_BASE_PATH, "product-types", 'containers')
+    PRODUCT_TYPE_ITEM_TEMPLATES = os.path.join(TEMPLATE_BASE_PATH, "product-types", 'items')
+
+    PRODUCT_CONTAINER_TEMPLATES = os.path.join(TEMPLATE_BASE_PATH, "product-list", 'containers')
+    PRODUCT_ITEM_TEMPLATES = os.path.join(TEMPLATE_BASE_PATH, "product-list", 'items')
+
     DEFAULT_CATEGORY_IMAGE_URL = '{0}/defaults/img/product-category'.format(STATIC_URL)
     DEFAULT_CATEGORY_IMAGE_ROOT = '{0}/defaults/img/product-category'.format(STATIC_ROOT)
+
     CATEGORY_IMAGE_URL = '{0}/product-category'.format(MEDIA_URL)
     CATEGORY_IMAGE_ROOT = '{0}/product-category'.format(MEDIA_ROOT)
 
 class ProductTypeIcon(models.Model):
-#    upload_path = lambda instance, filename: "/product-category".join((
-#      ApplicationSettings.CATEGORY_IMAGE_ROOT, "{0}-{1}".format(
-#        slugify(instance.product_type), filename)))
-
     upload_path = lambda instance, filename: "files/product-category/{0}".format(
       "{0}-{1}".format(slugify(instance.product_type), filename) )
 
@@ -45,16 +47,17 @@ class ProductTypeIcon(models.Model):
        related_name='icons', help_text="""The product type you want this icon
        related to...""")
 
+    class Meta:
+        unique_together = ('product_type', 'name',)
+
 
 class CProductTypesPlugin(CMSPlugin):
     """ Stores options for cmsplugin that shows lists of ProductTypes
     """
-    TEMPLATE_CHOICES = DynamicTemplateChoices(
-            path=ApplicationSettings.PRODUCT_TYPE_TEMPLATE_PATH,
-            include='.html',
-            exclude='base')
-    DEFAULT_TEMPLATE = os.path.join(ApplicationSettings.PRODUCT_TYPE_TEMPLATE_PATH,
-      "default.html")
+    DEFAULT_CONTAINER_TEMPLATE =  os.path.join(ApplicationSettings.PRODUCT_TYPE_CONTAINER_TEMPLATES, "default.html")
+    DEFAULT_ITEM_TEMPLATE =  os.path.join(ApplicationSettings.PRODUCT_TYPE_ITEM_TEMPLATES, "default.html")
+
+    title = models.CharField(max_length=128, default="Categories", null=True, blank=True)
 
     categories = models.ManyToManyField('configurableproduct.ProductType',
       blank=True, null=True,
@@ -64,10 +67,23 @@ class CProductTypesPlugin(CMSPlugin):
     hide_empty_categories = models.BooleanField(default=True,
       help_text="Hide product types that have no products?")
 
-    template = models.CharField(choices=TEMPLATE_CHOICES,
+    container_template = models.CharField(
+      default = ("Default", DEFAULT_CONTAINER_TEMPLATE) ,
       max_length=256, blank=True, null=True,
+      choices=DynamicTemplateChoices(
+            path=ApplicationSettings.PRODUCT_TYPE_CONTAINER_TEMPLATES,
+            include='.html'),
       help_text="""Select a template to render this
-      list. Templates are stored in : {0}""".format(ApplicationSettings.PRODUCT_TYPE_TEMPLATE_PATH))
+      list. Templates are stored in : {0}""".format(ApplicationSettings.PRODUCT_TYPE_CONTAINER_TEMPLATES))
+
+    item_template = models.CharField(
+      default = ("Default", DEFAULT_ITEM_TEMPLATE) ,
+      max_length=256, blank=True, null=True,
+      choices=DynamicTemplateChoices(
+            path=ApplicationSettings.PRODUCT_TYPE_ITEM_TEMPLATES,
+            include='.html'),
+      help_text="""Select a template to render this
+      list. Templates are stored in : {0}""".format(ApplicationSettings.PRODUCT_TYPE_ITEM_TEMPLATES))
 
     def __unicode__(self):
         return U"Types: {0}".format(self.categories.all())
@@ -76,16 +92,12 @@ class CProductTypesPlugin(CMSPlugin):
 class CProductsPlugin(CMSPlugin):
     """ Stores Options to display list of products from certain ProductTypes
     """
+    DEFAULT_CONTAINER_TEMPLATE =  os.path.join(ApplicationSettings.PRODUCT_CONTAINER_TEMPLATES, "default.html")
+    DEFAULT_ITEM_TEMPLATE =  os.path.join(ApplicationSettings.PRODUCT_ITEM_TEMPLATES, "default.html")
     FILTER_ACTIONS = (
         ("show", "Filter"),
         ("hide", "Exclude")
       )
-    TEMPLATE_CHOICES = DynamicTemplateChoices(
-            path=ApplicationSettings.PRODUCT_LIST_TEMPLATE_PATH,
-            include='.html',
-            exclude='base')
-    DEFAULT_TEMPLATE = os.path.join(ApplicationSettings.PRODUCT_LIST_TEMPLATE_PATH,
-      "default.html")
 
     categories = models.ManyToManyField('configurableproduct.ProductType',
       help_text="""Restrict the output list to these selected categories.
@@ -102,10 +114,23 @@ class CProductsPlugin(CMSPlugin):
       blank=True, null=True, choices = FILTER_ACTIONS,
       help_text="How to treat the filter verbs?")
 
-    template = models.CharField(choices=TEMPLATE_CHOICES,
-      max_length=256,
-      blank=True, null=True, help_text="""Select a template to render this
-      list. Templates are stored in : {0}""".format(ApplicationSettings.PRODUCT_LIST_TEMPLATE_PATH))
+    container_template = models.CharField(
+      default = ("Default", DEFAULT_CONTAINER_TEMPLATE) ,
+      max_length=256, blank=True, null=True,
+      choices=DynamicTemplateChoices(
+            path=ApplicationSettings.PRODUCT_TYPE_CONTAINER_TEMPLATES,
+            include='.html'),
+      help_text="""Select a template to render this
+      list. Templates are stored in : {0}""".format(ApplicationSettings.PRODUCT_CONTAINER_TEMPLATES))
+
+    item_template = models.CharField(
+      default = ("Default", DEFAULT_ITEM_TEMPLATE) ,
+      max_length=256, blank=True, null=True,
+      choices=DynamicTemplateChoices(
+            path=ApplicationSettings.PRODUCT_ITEM_TEMPLATES,
+            include='.html'),
+      help_text="""Select a template to render this
+      list. Templates are stored in : {0}""".format(ApplicationSettings.PRODUCT_ITEM_TEMPLATES))
 
     def __unicode__(self):
         return U"Types: {0}".format(",".join([ ctype.name for ctype in self.categories.all()]))

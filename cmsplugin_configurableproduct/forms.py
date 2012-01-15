@@ -20,10 +20,12 @@ class CProductTypesAdminForm(ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(CProductTypesAdminForm, self).__init__(*args, **kwargs)
-        self.fields['template'].choices = DynamicTemplateChoices(
-                     path = ApplicationSettings.PRODUCT_TYPE_TEMPLATE_PATH,
-                  include = '.html',
-                  exclude = 'base')
+        self.fields['container_template'].choices = DynamicTemplateChoices(
+                     path = ApplicationSettings.PRODUCT_TYPE_CONTAINER_TEMPLATES,
+                  include = '.html')
+        self.fields['item_template'].choices = DynamicTemplateChoices(
+                     path = ApplicationSettings.PRODUCT_TYPE_ITEM_TEMPLATES,
+                  include = '.html')
 
 
 class CProductsAdminForm(ModelForm):
@@ -33,7 +35,9 @@ class CProductsAdminForm(ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(CProductsAdminForm, self).__init__(*args, **kwargs)
-        self.fields['template'].choices = DynamicTemplateChoices(
-                     path = ApplicationSettings.PRODUCT_LIST_TEMPLATE_PATH,
-                  include = '.html',
-                  exclude = 'base')
+        self.fields['container_template'].choices = DynamicTemplateChoices(
+                     path = ApplicationSettings.PRODUCT_CONTAINER_TEMPLATES,
+                  include = '.html')
+        self.fields['item_template'].choices = DynamicTemplateChoices(
+                     path = ApplicationSettings.PRODUCT_ITEM_TEMPLATES,
+                  include = '.html')
