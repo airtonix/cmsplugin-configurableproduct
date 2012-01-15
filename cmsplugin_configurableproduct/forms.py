@@ -9,9 +9,7 @@ from .lib.choices import (
 from .models import (
   CProductTypesPlugin,
   CProductsPlugin,
-  TEMPLATE_BASE_PATH,
-  PRODUCT_TYPE_TEMPLATE_PATH,
-  PRODUCT_LIST_TEMPLATE_PATH,
+  ApplicationSettings,
 )
 
 
@@ -23,7 +21,7 @@ class CProductTypesAdminForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super(CProductTypesAdminForm, self).__init__(*args, **kwargs)
         self.fields['template'].choices = DynamicTemplateChoices(
-                     path = PRODUCT_TYPE_TEMPLATE_PATH,
+                     path = ApplicationSettings.PRODUCT_TYPE_TEMPLATE_PATH,
                   include = '.html',
                   exclude = 'base')
 
@@ -36,6 +34,6 @@ class CProductsAdminForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super(CProductsAdminForm, self).__init__(*args, **kwargs)
         self.fields['template'].choices = DynamicTemplateChoices(
-                     path = PRODUCT_LIST_TEMPLATE_PATH,
+                     path = ApplicationSettings.PRODUCT_LIST_TEMPLATE_PATH,
                   include = '.html',
                   exclude = 'base')
