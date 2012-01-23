@@ -37,14 +37,15 @@ class ProductCategories(CMSPluginBase):
 
         types = ProductType.objects.all()
 
+        chosen_categories = instance.categories.all()
+        if chosen_categories :
+            types = chosen_categories
+
         if instance.hide_empty_categories :
             objects = Product.objects.filter(active=True)
             used_types = objects.values("type").distinct()
             types = types.filter(pk__in = used_types)
 
-#        chosen_categories = instance.categories.all()
-#        if chosen_categories.count() > 0:
-#            types.filter(pk__in = instance.categories.values('id'))
 
         context.update({
           'Types': types,

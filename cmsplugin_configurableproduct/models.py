@@ -12,8 +12,7 @@ from appconf import AppConf
 
 from .lib.choices import (
   DynamicTemplateChoices,
-  DynamicChoice,
-  )
+  DynamicChoice, )
 
 STATIC_URL = getattr(settings, "STATIC_URL", '/static')
 STATIC_ROOT = getattr(settings, "STATIC_ROOT", None)
@@ -30,11 +29,12 @@ class ApplicationSettings(AppConf):
     PRODUCT_CONTAINER_TEMPLATES = os.path.join(TEMPLATE_BASE_PATH, "product-list", 'containers')
     PRODUCT_ITEM_TEMPLATES = os.path.join(TEMPLATE_BASE_PATH, "product-list", 'items')
 
-    DEFAULT_CATEGORY_IMAGE_URL = '{0}/defaults/img/product-category'.format(STATIC_URL)
-    DEFAULT_CATEGORY_IMAGE_ROOT = '{0}/defaults/img/product-category'.format(STATIC_ROOT)
+    DEFAULT_CATEGORY_IMAGE_URL = os.path.join(STATIC_URL, 'defaults', 'img',
+      'product-category', 'missing-icon-{0}.png')
 
     CATEGORY_IMAGE_URL = '{0}/product-category'.format(MEDIA_URL)
     CATEGORY_IMAGE_ROOT = '{0}/product-category'.format(MEDIA_ROOT)
+
 
 class ProductTypeIcon(models.Model):
     upload_path = lambda instance, filename: "files/product-category/{0}".format(
