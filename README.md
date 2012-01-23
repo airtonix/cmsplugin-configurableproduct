@@ -16,17 +16,17 @@ This simple extension provides some plugins to display things about your
 
 1. make sure you are using a python virtual environment
 
-    virtualenv ~/Dev/virtualenv/projectname
-    . ~/Dev/virtualenv/projectname/bin/activate
-    cd ~/Dev/projects/projectname/
+>    virtualenv ~/Dev/virtualenv/projectname
+>    . ~/Dev/virtualenv/projectname/bin/activate
+>    cd ~/Dev/projects/projectname/
 
 2. install it from pypi
 
-    pip install cmsplugin-configurableproduct
+>    pip install cmsplugin-configurableproduct
 
 3. or, install it from github
 
-    pip install git+https://github.com/airtonix/cmsplugin-configurableproduct
+>    pip install git+https://github.com/airtonix/cmsplugin-configurableproduct
 
 
 ## Override Template
@@ -35,11 +35,11 @@ Choosing a template in the administration interface means that you
 populate the following two relative paths (to any of your app template dirs)
 with templates you desire to be made available.
 
-* cmsplugin_configurableproduct/product-types
-* cmsplugin_configurableproduct/product-list
+* cmsplugin_configurableproduct/product-types/containers/
+* cmsplugin_configurableproduct/product-types/items/
+* cmsplugin_configurableproduct/products/containers/
+* cmsplugin_configurableproduct/products/items/
 
-Any .html file that doesn't contain the word 'base' will be presented in
-the template selector combo dropdown in the admin interface.
 
 For example, if your django project was at :
 
@@ -51,16 +51,24 @@ And you had a django application named `SomethingSomethingSomething` at :
 
 Then templates for this plugin could be found at :
 
-    ~/Dev/Django/MyProjectName/SomethingSomethingSomething/templates/cmsplugin_configurableproduct/product-types/*.html
-    ~/Dev/Django/MyProjectName/SomethingSomethingSomething/templates/cmsplugin_configurableproduct/product-list/*.html
+    ~/Dev/Django/MyProjectName/SomethingSomethingSomething/templates/cmsplugin_configurableproduct/product-types/containers/*.html
+    ~/Dev/Django/MyProjectName/SomethingSomethingSomething/templates/cmsplugin_configurableproduct/product-types/items/*.html
+    ~/Dev/Django/MyProjectName/SomethingSomethingSomething/templates/cmsplugin_configurableproduct/products/containers/*.html
+    ~/Dev/Django/MyProjectName/SomethingSomethingSomething/templates/cmsplugin_configurableproduct/products/items/*.html
 
 In fact, anywhere django looks for templates, you can place the following tree :
 
     /cmsplugin_configurableproduct
         /product-types
-            /*.html
-        /product-list
-            /*.html
+            /containers/
+                /*.html
+            /items/
+                /*.html
+        /products
+            /containers/
+                /*.html
+            /items/
+                /*.html
 
 
 ### Customising Templates
@@ -80,41 +88,36 @@ base.html in the `cmsplugin_configurableproduct` directory is used to load the
 selected template chosen in the administration interface.
 
 
-#### ./product-types/*.html
+#### ./product-types/containers/*.html, ./product-types/items/*.html 
 
 templates here are provided the context :
 
 >     plugin.instance
 >          categories
->               Chosen categories for this instance,
->
->          show_category_icon
->               For when configurable_product.ProductType stores an image.
+>               Chosen categories (configurableproduct.ProductType) for this instance,
 >
 >          hide_empty_categories
 >               Self explanitory, effected in the cms_plugin.
 >
->          template
->               Chosen template.
+>          container_template
+>               Chosen template for the list container. for loop occurs here.
 >
->     Types
->        A list of configurable_product.ProductType(s)
+>          item_template
+>               Chosen template for each item in the list.
+>
 
 
-#### ./product-list/*.html
+#### ./products/containers/*.html, ./products/items/*.html
 
 templates here are provided the context :
 
 
 >     plugin.instance
 >          categories
->               Chosen categories for this instance,
+>               Chosen categories (configurableproduct.ProductType) for this instance,
 >
 >          hide_empty_categories
 >               Self explanitory, effected in the cms_plugin.
->
->          template
->               Chosen template.
 >
 >          filter_product_attributes
 >               Comma separated list of CProductField names on which to
@@ -123,8 +126,28 @@ templates here are provided the context :
 >          filter_action
 >               The action to take on the filter attributes listed above.
 >
+>          container_template
+>               Chosen template for the list container. for loop occurs here.
+>
+>          item_template
+>               Chosen template for each item in the list.
+>
 >     Products
->        A list of configurable_product.CProduct(s)
+>        A list of configurable_product.CProduct(s) after filtering based on chosen
+>        chosen categories (configurableproduct.ProductType)
+
+
+## TemplateTags
+
+Since this plugin also introduces a new model in order to associate an Icon with an 
+object in the configurableproduct.ProductType model, I created the following template tag
+to help pull the relevant url.
+
+
+
+>     `{% load cmsplugin_configurableproduct_tags %}`
+> 
+>     `{% product_type_icon ProductTypeObject '<ProductTypeIcon.name>' %}`
 
 
 
@@ -138,6 +161,8 @@ github : http://github.com/airtonix/cmsplugin-configurableproduct
 
 provide option to manipulate menu choices:
 
+* Create block tag or filter `withproduct_type_icon` that exports url as a variable 
+  for use with other templatetags.
 * Refine the product filter.
 * Provide better default templates.
 * Allow selecting/use of snippets for menu templates?
