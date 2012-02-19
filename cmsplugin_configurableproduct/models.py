@@ -32,8 +32,8 @@ class ApplicationSettings(AppConf):
     DEFAULT_CATEGORY_IMAGE_URL = os.path.join(STATIC_URL, 'defaults', 'img',
       'product-category', 'missing-icon-{0}.png')
 
-    CATEGORY_IMAGE_URL = '{0}/product-category'.format(MEDIA_URL)
-    CATEGORY_IMAGE_ROOT = '{0}/product-category'.format(MEDIA_ROOT)
+    CATEGORY_IMAGE_URL = '{0}/product-category/'.format(MEDIA_URL)
+    CATEGORY_IMAGE_ROOT = '{0}/product-category/'.format(MEDIA_ROOT)
 
 
 class ProductTypeIcon(models.Model):
