@@ -32,12 +32,12 @@ class ApplicationSettings(AppConf):
     DEFAULT_CATEGORY_IMAGE_URL = os.path.join(STATIC_URL, 'defaults', 'img',
       'product-category', 'missing-icon-{0}.png')
 
-    CATEGORY_IMAGE_URL = '{0}/product-category/'.format(MEDIA_URL)
-    CATEGORY_IMAGE_ROOT = '{0}/product-category/'.format(MEDIA_ROOT)
+    CATEGORY_IMAGE_URL = '{0}product-category'.format(MEDIA_URL)
+    CATEGORY_IMAGE_ROOT = '{0}product-category'.format(MEDIA_ROOT)
 
 
 class ProductTypeIcon(models.Model):
-    upload_path = lambda instance, filename: "files/product-category/{0}".format(
+    upload_path = lambda instance, filename: "product-category/{0}".format(
       "{0}-{1}".format(slugify(instance.product_type), filename) )
 
     # fields
