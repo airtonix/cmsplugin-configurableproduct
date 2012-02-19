@@ -34,7 +34,10 @@ class ProductTypeIcon(Tag):
     def render_tag(self, context, product_type, tag):
         try:
             icon= product_type.icons.get(name = tag)
-            return settings.MEDIA_URL+str(icon.image)
+            return "{base}/{image}".format(
+              base = ApplicationSettings.CATEGORY_IMAGE_URL,
+              image = str(icon.image)
+            ) 
 
         except Exception, error:
             return ApplicationSettings.DEFAULT_CATEGORY_IMAGE_URL.format(tag.lower())
